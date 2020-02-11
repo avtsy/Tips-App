@@ -31,7 +31,7 @@ public class MyReceiver extends BroadcastReceiver {
     @Override
     public void onReceive (Context context, Intent intent)
     {
-
+        // get the relevant content
         pref = context.getSharedPreferences ("SAVED_FILE", Context.MODE_PRIVATE);
 
         int atMsgNum = pref.getInt ("CURRENT", 1);
@@ -42,21 +42,25 @@ public class MyReceiver extends BroadcastReceiver {
 
         String titleStr = mom.msg [atMsgNum].title;
         String contentStr = mom.msg [atMsgNum].msg;
-        //int id = mom.msg [atMsgNum].num;
 
         atMsgNum++;
 
+
+        // update current tip num
         editor =  pref.edit ();
         editor.putInt ("CURRENT", atMsgNum);
         editor.commit ();
 
-        intent.setClass (context, AlertDtl.class);
-        intent.putExtra ("TIP_NUM", atMsgNum);
+
+        // intent for showing the tip activity
+        intent.setClass (context, OnPressTipNotificationActivity.class);
+        intent.putExtra ("ID", atMsgNum);
         intent.setFlags (Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
+
+        // notification
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addNextIntentWithParentStack(intent);
-
 
         PendingIntent pendingIntent =  stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -76,8 +80,6 @@ public class MyReceiver extends BroadcastReceiver {
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from (context);
         notificationManager.notify (777, builder.build ());
-
-
     }
 
 

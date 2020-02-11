@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
-public class AlertDtl extends AppCompatActivity
+public class OnPressTipNotificationActivity extends AppCompatActivity
 {
 
     @Override

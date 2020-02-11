@@ -24,7 +24,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".AlertDtl"></activity>
+        <activity android:name=".OnPressTipNotificationActivity"></activity>
         <activity android:name=".SingleTipActivity" />
         <activity android:name=".updateSharedPreffernce">
             <intent-filter>

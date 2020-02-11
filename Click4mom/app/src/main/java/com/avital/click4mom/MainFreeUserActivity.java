@@ -46,8 +46,7 @@ public class MainFreeUserActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onCreate (Bundle savedInstanceState)
-    {
+    protected void onCreate (Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
         setContentView (R.layout.activity_main_free_user);
 
@@ -59,18 +58,10 @@ public class MainFreeUserActivity extends AppCompatActivity {
 
 
         sharedPref = getSharedPreferences ("SAVED_FILE", Context.MODE_PRIVATE);
-        code = sharedPref.getInt ("CODE", 0);
-
-
-        /*Msg msg = new Msg (2 ,"666555","666eee");
-        msg.calendar.add (Calendar.SECOND,1);
-        addSingleAlert (msg);*/
-
     }
 
     @Override
-    protected void onResume ()
-    {
+    protected void onResume () {
 
         super.onResume ();
 
@@ -85,30 +76,29 @@ public class MainFreeUserActivity extends AppCompatActivity {
         if (current != -1) // -1 means that mom haven't get notifi yet
             mom.atMsgNum = current;
 
-        if (max != 0 && max != mom.atMsgNum) // refresh ui
+        if (max != 0 && max != mom.atMsgNum) { // user has app open so we need to refresh ui
             startActivity (Intent.makeRestartActivityTask (this.getIntent ().getComponent ()));
 
-        else
+        } else
             setUi ();
     }
 
     @Override
-    protected void onPause ()
-    {
+    protected void onPause () {
 
         super.onPause ();
 
-        //sharedPref = getSharedPreferences ("SAVED_FILE", MODE_PRIVATE);
+        // get current from notifications reciever
         mom.atMsgNum = sharedPref.getInt ("CURRENT", 1);
 
+        // save mom for next time
         Gson gson = new Gson ();
         String momToSave = gson.toJson (mom);
         SharedPreferences.Editor editor = sharedPref.edit ();
         editor.putString ("MOM_OBJ", momToSave);
         editor.commit ();
 
-        if (max != mom.atMsgNum && max != 0)
-        { // need to update the ui next time. remove app from background
+        if (max != mom.atMsgNum && max != 0) { // need to update the ui next time. remove app from background
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 super.finishAndRemoveTask ();
@@ -118,31 +108,24 @@ public class MainFreeUserActivity extends AppCompatActivity {
         }
     }
 
-    public void setUi ()
-    {
+    public void setUi () {
+        code = sharedPref.getInt ("CODE", 0);
 
-
-        if (code == -1)
-        { // shared
+        if (code == -1) { // shared
 
             makeTabs (); // make the tabs layout etc
 
-        } else if (code == 0)
-        { // never shared
+        } else if (code == 0) { // never shared
 
             makeTabs ();
 
-        } else
-        { // A code exist but still don't know if shared or not
+        } else  // A code exist but still don't know if shared or not
 
             checkCode ();
-        }
     }
 
 
-    private void makeTabs ()
-    {
-
+    private void makeTabs () {
         viewPager = findViewById (R.id.tabViewPager);
         TabLayout tabLayout = findViewById (R.id.tabLayout);
 
@@ -152,28 +135,21 @@ public class MainFreeUserActivity extends AppCompatActivity {
 
         tabLayout.addOnTabSelectedListener (new TabLayout.OnTabSelectedListener () {
             @Override
-            public void onTabSelected (TabLayout.Tab tab)
-            {
+            public void onTabSelected (TabLayout.Tab tab) {
 
                 viewPager.setCurrentItem (tab.getPosition ());
             }
 
             @Override
-            public void onTabUnselected (TabLayout.Tab tab)
-            {
-            }
+            public void onTabUnselected (TabLayout.Tab tab) { }
 
             @Override
-            public void onTabReselected (TabLayout.Tab tab)
-            {
-            }
+            public void onTabReselected (TabLayout.Tab tab) { }
         });
     }
 
 
-    private void setupViewPager (ViewPager viewPager)
-    {
-
+    private void setupViewPager (ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter (getSupportFragmentManager ());
 
         adapter.addFrag (new Tips (showTipsList (), sharedPref), "טיפים");
@@ -181,19 +157,10 @@ public class MainFreeUserActivity extends AppCompatActivity {
         adapter.addFrag (new UpdateToPayActivity (), "שדרוג");
 
         viewPager.setAdapter (adapter);
-
     }
 
 
-    private String[] showTipsList ()
-    {
-
-        /*SharedPreferences sharedPreferences = getSharedPreferences ("SAVED_FILE", Context.MODE_PRIVATE);
-
-        String json = sharedPreferences.getString ("MOM_OBJ", "");
-        Gson gson = new Gson ();
-        Mom mom = gson.fromJson (json, Mom.class);
-*/
+    private String[] showTipsList () {
         max = mom.atMsgNum;
 
         String[] str = new String[max];
@@ -203,6 +170,7 @@ public class MainFreeUserActivity extends AppCompatActivity {
 
         return str;
     }
+
 
     static class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<> ();
@@ -214,34 +182,28 @@ public class MainFreeUserActivity extends AppCompatActivity {
         }
 
         @Override
-        public Fragment getItem (int position)
-        {
+        public Fragment getItem (int position) {
             return mFragmentList.get (position);
         }
 
         @Override
-        public int getCount ()
-        {
+        public int getCount () {
             return mFragmentList.size ();
         }
 
-        public void addFrag (Fragment fragment, String title)
-        {
+        public void addFrag (Fragment fragment, String title) {
             mFragmentList.add (fragment);
             mFragmentTitleList.add (title);
         }
 
         @Override
-        public CharSequence getPageTitle (int position)
-        {
+        public CharSequence getPageTitle (int position) {
             return mFragmentTitleList.get (position);
         }
     }
 
 
-    private void checkCode ()
-    {
-
+    private void checkCode () {
         context = this;
 
         queueCode = Volley.newRequestQueue (getApplicationContext ());
@@ -254,9 +216,8 @@ public class MainFreeUserActivity extends AppCompatActivity {
                     public void onResponse (String response)
                     {
 
-                        if (response.contains ("1"))
-                        { // B downloaded
-                            //updat code
+                        if (response.contains ("1")) { // B downloaded
+                            // updat code
                             sharedPref = getSharedPreferences ("SAVED_FILE", Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPref.edit ();
                             editor.putInt ("CODE", -1);
@@ -271,7 +232,7 @@ public class MainFreeUserActivity extends AppCompatActivity {
                             // create notifications
                             createNotificationChannel ();
                             mom.msgAddTimes ();
-                            addAlerts (mom);////////////////////////////////////////////////////////////
+                            addAlerts (mom);
 
                             // save mom at internal store
                             gson = new Gson ();
@@ -281,18 +242,15 @@ public class MainFreeUserActivity extends AppCompatActivity {
 
                             makeTabs (); // make the tabs layout etc
 
-                        } else
-                        {//if (response.contains ("2")) { // A still didn't share or B didn't download
+                        } else { // A still didn't share or B didn't download
 
                             makeTabs (); // make the tabs layout etc
                         }
                     }
                 }, new Response.ErrorListener () {
             @Override
-            public void onErrorResponse (VolleyError error)
-            {
-                if (tryings < 5)
-                {
+            public void onErrorResponse (VolleyError error) {
+                if (tryings < 5) {
                     tryings++;
                     checkCode ();
                 } else
@@ -305,18 +263,14 @@ public class MainFreeUserActivity extends AppCompatActivity {
 
     }
 
-    private void addAlerts (Mom mom)
-    {
-
+    private void addAlerts (Mom mom) {
         MyReceiver rc = new MyReceiver ();
 
         for (int i = 1; i < mom.totalMsgNum; i++)
             rc.setSingleNotifications (this, mom.msg[i]);
     }
 
-    private void addSingleAlert (Msg msg)
-    {
-
+    private void addSingleAlert (Msg msg) {
         createNotificationChannel ();
         MyReceiver rc = new MyReceiver ();
 
@@ -324,8 +278,7 @@ public class MainFreeUserActivity extends AppCompatActivity {
     }
 
 
-    private void createNotificationChannel ()
-    {
+    private void createNotificationChannel () {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
         {
@@ -348,12 +301,5 @@ public class MainFreeUserActivity extends AppCompatActivity {
         if (queueCode != null)
             queueCode.cancelAll (TAG_CODE);
 
-    }
-
-    @Override
-    protected void onDestroy () {
-
-        super.onDestroy ();
-        Toast.makeText (this, "DESTROYED", Toast.LENGTH_LONG).show ();
     }
 }

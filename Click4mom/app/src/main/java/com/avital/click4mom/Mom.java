@@ -113,7 +113,6 @@ public class Mom {
 
             msg [i].setCal (calendar.get (Calendar.DAY_OF_MONTH), calendar.get (Calendar.MONTH), calendar.get (Calendar.YEAR), calendar.get (Calendar.HOUR_OF_DAY), calendar.get (Calendar.MINUTE));
 
-            //calendar.add (Calendar.HOUR_OF_DAY, 1);
             calendar.add (Calendar.MINUTE, 1);
         }
 
