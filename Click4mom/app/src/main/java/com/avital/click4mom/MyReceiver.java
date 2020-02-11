@@ -62,7 +62,7 @@ public class MyReceiver extends BroadcastReceiver {
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addNextIntentWithParentStack(intent);
 
-        PendingIntent pendingIntent =  stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent =  stackBuilder.getPendingIntent(atMsgNum, 0);
 
         NotificationCompat.Builder builder;
 
@@ -79,7 +79,7 @@ public class MyReceiver extends BroadcastReceiver {
                 .setVisibility (NotificationCompat.VISIBILITY_PUBLIC); // for lock screen
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from (context);
-        notificationManager.notify (777, builder.build ());
+        notificationManager.notify (atMsgNum, builder.build ());
     }
 
 
