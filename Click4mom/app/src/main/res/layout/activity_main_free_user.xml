@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:weightSum="8"
+    android:id="@+id/main_layout"
+    android:background="@color/colorPrimary">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:orientation="horizontal"
+                android:layout_weight="1"
+                android:weightSum="3"
+                android:layoutDirection="rtl">
+
+                    <ImageView
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/text_logo"/>
+
+                    <ImageView
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="45dp"
+                        android:layout_gravity="bottom"
+                        android:src="@drawable/pics_logo"/>
+
+                    <ImageView
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="80dp"/>
+
+            </LinearLayout>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true"
+                android:layout_weight="7"
+                tools:context=".MainActivity"
+                android:background="@color/colorPrimary">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/lightPink"
+                    android:orientation="vertical"
+                    android:id="@+id/ll"
+                    android:layoutDirection="rtl"
+                    android:paddingTop="20dp">
+
+                    <androidx.viewpager.widget.ViewPager
+                        android:id="@+id/tabViewPager"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="3">
+
+                            <com.google.android.material.tabs.TabLayout
+                                android:id="@+id/tabLayout"
+                                app:tabTextAppearance="@style/TabLayoutTextSize"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:tabRippleColor="@color/colorPrimaryDark">
+
+                            </com.google.android.material.tabs.TabLayout>
+
+
+                    </androidx.viewpager.widget.ViewPager>
+
+
+
+                </LinearLayout>
+            </ScrollView>
+    </LinearLayout>
+
